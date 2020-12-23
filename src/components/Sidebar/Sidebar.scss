@@ -1,0 +1,21 @@
+.sidebar {
+  width: 20%;
+  background-color: #2b2f3e;
+}
+
+.app-info {
+  padding-left: 10%;
+  padding-top: 10%;
+
+  &__name {
+    color: #fff;
+    font-family: Helvetica, sans-serif;
+    margin-bottom: 10px;
+  }
+
+  &__description {
+    color: #808080;
+    padding: 0;
+    margin: 0;
+  }
+}

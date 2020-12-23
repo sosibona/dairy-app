@@ -1,0 +1,28 @@
+.create-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+
+  &__input {
+    width: 100%;
+    padding-left: 10px;
+    height: 36px;
+    line-height: 1.5;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+  }
+
+  &__btn {
+    width: 150px;
+    padding: 0 10px;
+    color: #fff;
+    background-color: #27ccc0;
+    margin-left: 20px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
