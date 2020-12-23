@@ -1,46 +1,38 @@
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CommentsList from '../Comments/CommentsList';
 import Container from '../Container/Container';
 import ItemsList from '../Items/ItemsList';
 
-class Main extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      items: [],
-      activeItem: null,
-    }
-  }
+const Main = () => {
+  const [items, setItems] = useState([]);
+  const [activeItem, setaActiveItem] = useState(null);
 
-  componentDidMount() {
+  useEffect(() => {
     const items = localStorage.getItem('items');
-    if (items) {
-      this.setState({
-        items: JSON.parse(items),
-      });
-    }
-  }
+    if (items) setItems(JSON.parse(items));
 
-  createNewItem = (item) => {
+    const activeItem = localStorage.getItem('activeItem');
+    if (activeItem) setaActiveItem(JSON.parse(activeItem))
+  }, [])
+
+  const createNewItem = useCallback((item) => {
     const newItem = {
       id: Math.random().toString(),
       title: item,
       comments: [],
     }
-    const updateItems = this.state.items.concat(newItem);
-    this.setState({
-      items: updateItems,
-    })
+    const updateItems = items.concat(newItem);
+    setItems(updateItems)
     localStorage.setItem('items', JSON.stringify(updateItems))
-  }
+  }, [items])
 
-  createNewComment = (text) => {
+  const createNewComment = useCallback((text) => {
     const newComent = {
       id: Math.random().toString(),
       text,
     }
-    const updateItems = this.state.items.map(item => {
-      if (item.id === this.state.activeItem.itemId) {
+    const updateItems = items.map(item => {
+      if (item.id === activeItem.itemId) {
         return {
           ...item,
           comments: item.comments.concat(newComent),
@@ -49,75 +41,66 @@ class Main extends Component {
         return item;
       }
     })
-    this.setState({
-      items: updateItems,
-    })
+    setItems(updateItems)
     localStorage.setItem('items', JSON.stringify(updateItems))
-  }
+  }, [items, activeItem])
 
-  deleteItem = async itemId => {
-    if (itemId === this.state.activeItem) {
-      this.setState({
-        activeItem: null,
-      })
-    }
-    const updateItems = this.state.items.filter(item => item.id !== itemId);
-    await this.setState({
-      items: updateItems,
-    });
-    if (this.state.activeItem) {
-      this.setActiveItem(this.state.activeItem.itemId)
-    }
-    localStorage.setItem('items', JSON.stringify(updateItems))
-  };
-
-  setActiveItem = (itemId) => {
-    if (this.state.activeItem && itemId === this.state.activeItem.itemId) {
-      this.setState({
-        activeItem: null
-      })
+  const setActive = useCallback((itemId) => {
+    if (activeItem && itemId === activeItem.itemId) {
+      setaActiveItem(null);
+      localStorage.setItem('activeItem', JSON.stringify(null))
       return;
     }
-    const numberItem = this.state.items.findIndex((item) => item.id === itemId);
-    const activeItem = {
+    const numberItem = items.findIndex((item) => item.id === itemId);
+    const newActiveItem = {
       itemId: itemId,
       position: "#" + (numberItem + 1),
     }
-    this.setState({
-      activeItem,
-    })
-    // localStorage.setItem('items', JSON.stringify(updateItems))
-  }
+    setaActiveItem(newActiveItem);
+    localStorage.setItem('activeItem', JSON.stringify(newActiveItem))
+  }, [items, activeItem])
 
-
-  render() {
-    let activeItem;
-    if (!this.state.activeItem) {
-      activeItem = null;
-    } else {
-      activeItem = this.state.items.find(item => item.id === this.state.activeItem.itemId)
+  const deleteItem = useCallback(async (itemId) => {
+    if (itemId === activeItem) {
+      setaActiveItem(null)
+      localStorage.setItem('activeItem', JSON.stringify(null))
     }
-    return (
-      <div className="main">
-        <Container>
-          <ItemsList
-            items={this.state.items}
-            createNewItem={this.createNewItem}
-            deleteItem={this.deleteItem}
-            setActiveItem={this.setActiveItem}
-            activeItemId={this.state.activeItem ? this.state.activeItem.itemId : null}
-          />
-        </Container>
-        <Container>
-          <CommentsList
-            comments={activeItem ? activeItem.comments : []}
-            createNewComment={this.createNewComment}
-            activeItem={this.state.activeItem ? this.state.activeItem.position : null}
-          />
-        </Container>
-      </div>
-    );
-  }
+    const updateItems = this.state.items.filter(item => item.id !== itemId);
+    await setItems(updateItems)
+
+    if (activeItem) {
+      setActive(activeItem.itemId)
+    }
+  }, [activeItem, setActive])
+
+  const comments = useMemo(() => {
+    if (!activeItem) {
+      return [];
+    } else {
+      return items.find(item => item.id === activeItem.itemId).comments
+    }
+  }, [activeItem, items])
+
+  return (
+    <div className="main">
+      <Container>
+        <ItemsList
+          items={items}
+          createNewItem={createNewItem}
+          deleteItem={deleteItem}
+          setActiveItem={setActive}
+          activeItemId={activeItem ? activeItem.itemId : null}
+        />
+      </Container>
+      <Container>
+        <CommentsList
+          comments={comments}
+          createNewComment={createNewComment}
+          activeItem={activeItem ? activeItem.position : null}
+        />
+      </Container>
+    </div>
+  );
 }
 
 export default Main;
