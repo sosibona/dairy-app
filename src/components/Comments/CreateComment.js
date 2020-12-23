@@ -1,49 +1,36 @@
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-class CreateComment extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      comment: ""
+const CreateComment = ({ createNewComment }) => {
+  const [comment, setComment] = useState("");
+
+  const keydownHandler = useCallback((event) => {
+    if (event.keyCode === 13 && event.ctrlKey) {
+      const { value } = event.target;
+      if (!value) return;
+      createNewComment(value);
+      setComment("");
     }
-  }
+  }, [createNewComment])
 
-  keydownHandler = (e) => {
-    if (e.keyCode === 13 && e.ctrlKey) {
-      this.props.createNewComment(e.target.value)
-      this.setState({
-        comment: ''
-      })
+  useEffect(() => {
+    document.addEventListener('keydown', keydownHandler);
+    return () => {
+      document.removeEventListener('keydown', keydownHandler);
     }
-  }
+  }, [keydownHandler])
 
-  componentDidMount(){
-    document.addEventListener('keydown',this.keydownHandler);
-  }
-
-  componentWillUnmount(){
-    document.removeEventListener('keydown',this.keydownHandler);
-  }
-
-  handleComment = (event) => {
-    this.setState({
-      comment: event.target.value,
-    })
-  }
-  render() {
-    return (
-      <div className="comment">
-        <div className="comment__user-logo new-comment"></div>
-        <div className="comment__text">
-          <textarea
-            className="comment__input"
-            value={this.state.comment}
-            onChange={(event) => this.handleComment(event)}
-          ></textarea>
-        </div>
+  return (
+    <div className="comment">
+      <div className="comment__user-logo new-comment"></div>
+      <div className="comment__text">
+        <textarea
+          className="comment__input"
+          value={comment}
+          onChange={(event) => setComment(event.target.value)}
+        ></textarea>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default CreateComment;

@@ -105,7 +105,7 @@ class Main extends Component {
             createNewItem={this.createNewItem}
             deleteItem={this.deleteItem}
             setActiveItem={this.setActiveItem}
-            activeItem={this.state.activeItem ? this.state.activeItem.itemId : null}
+            activeItemId={this.state.activeItem ? this.state.activeItem.itemId : null}
           />
         </Container>
         <Container>

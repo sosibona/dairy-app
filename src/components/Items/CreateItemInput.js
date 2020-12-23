@@ -1,48 +1,32 @@
-import React, { Component } from 'react';
+import React, { useCallback, useState } from 'react';
 import './CreateItemInput.scss';
 
-class CreateItemInput extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      value: '',
-    }
-  }
+const CreateItemInput = ({ createNewItem }) => {
+  const [item, setItem] = useState("");
 
-  handleValue = event => {
-    this.setState({
-      value: event.target.value,
-    });
-  };
+  const createItem = useCallback(() => {
+    if (!item) return;
+    createNewItem(item)
+    setItem("")
+  }, [createNewItem, item]);
 
-  createItem = () => {
-    this.props.createNewItem(this.state.value)
-    this.setState({
-      value: ''
-    })
-  }
-
-
-
-  render() {
-    return (
-      <div className="create-item">
-        <input
-          className="create-item__input"
-          type="text"
-          placeholder="Type name here..."
-          value={this.state.value}
-          onChange={(event) => this.handleValue(event)}
-        />
-        <button
-          className="create-item__btn"
-          onClick={this.createItem}
-        >
-          Add new
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="create-item">
+      <input
+        className="create-item__input"
+        placeholder="Type name here..."
+        type="text"
+        value={item}
+        onChange={(event) => setItem(event.target.value)}
+      />
+      <button
+        className="create-item__btn"
+        onClick={createItem}
+      >
+        Add new
+      </button>
+    </div>
+  );
 }
 
 export default CreateItemInput;

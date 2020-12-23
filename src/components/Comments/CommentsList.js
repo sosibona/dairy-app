@@ -1,22 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Comment from './Comment';
 import CreateComment from './CreateComment';
 
-class CommentsList extends Component {
-  render() {
-    const commentsList = this.props.comments.map(comment => {
-      return <Comment key={comment.id} comment={comment.text} />
-    })
-    return (
-      <div>
-        <span className="container__title">Comments {this.props.activeItem}</span>
-        <div className="comments">
-          {commentsList}
-        </div>
-        {this.props.activeItem && <CreateComment createNewComment={this.props.createNewComment} />}
+const CommentsList = ({ activeItem, createNewComment, comments }) => {
+  const commentsList = comments.map(comment => (
+    <Comment key={comment.id} comment={comment.text} />
+  ));
+  return (
+    <div>
+      <span className="container__title">Comments {activeItem}</span>
+      <div className="comments">
+        {commentsList}
       </div>
-    );
-  }
+      {activeItem && <CreateComment createNewComment={createNewComment} />}
+    </div>
+  );
 }
 
 export default CommentsList;
