@@ -2,7 +2,7 @@ import React from 'react';
 import CreateItemInput from './CreateItemInput';
 import Item from './Item';
 
-const ItemsList = ({ items, createNewItem, activeItemId, setActiveItem, deleteItem }) => {
+const ItemsList = ({ items, createNewItem, activeItemId, setActiveItem, deleteItem, disableActiveItem }) => {
   const itemsList = items.map(item => (
     <Item
       key={item.id}
@@ -12,6 +12,7 @@ const ItemsList = ({ items, createNewItem, activeItemId, setActiveItem, deleteIt
       deleteItem={deleteItem}
       setActiveItem={setActiveItem}
       activeItemId={activeItemId}
+      disableActiveItem={disableActiveItem}
     />
   ))
   return (
