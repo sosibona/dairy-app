@@ -65,13 +65,13 @@ const Main = () => {
       setaActiveItem(null)
       localStorage.setItem('activeItem', JSON.stringify(null))
     }
-    const updateItems = this.state.items.filter(item => item.id !== itemId);
+    const updateItems = items.filter(item => item.id !== itemId);
     await setItems(updateItems)
 
     if (activeItem) {
       setActive(activeItem.itemId)
     }
-  }, [activeItem, setActive])
+  }, [activeItem, setActive, items])
 
   const comments = useMemo(() => {
     if (!activeItem) {
