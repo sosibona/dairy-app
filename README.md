@@ -1,6 +1,6 @@
 # Dairy App
 
-### Go **[here](https://silly-albattani-c9b188.netlify.app/)** for live demo.
+### Go **[here](https://amazing-wescoff-f0b0f2.netlify.app/)** for live demo.
 
 # Installing
 
