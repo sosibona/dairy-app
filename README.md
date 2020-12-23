@@ -1,4 +1,4 @@
-# Products list
+# Dairy App
 
 ### Go **[here](https://silly-albattani-c9b188.netlify.app/)** for live demo.
 
