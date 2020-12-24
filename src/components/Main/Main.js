@@ -16,7 +16,7 @@ const Main = () => {
   }, [activeItem])
 
   const createNewItem = useCallback((text) => {
-    // if (!text) return;
+    if (!text) return;
     const newItem = {
       id: Math.random().toString(),
       title: text,
