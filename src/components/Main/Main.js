@@ -64,9 +64,7 @@ class Main extends Component {
 
   deleteItem = async itemId => {
     if (this.state.activeItem && itemId === this.state.activeItem.itemId) {
-      this.setState({
-        activeItem: null,
-      })
+      this.disableActiveItem();
     }
     const updateItems = this.state.items.filter(item => item.id !== itemId);
     await this.setState({
