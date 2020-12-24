@@ -1,19 +1,19 @@
 import React from 'react';
 import './Item.scss';
 
-const Item = ({title, comments, deleteItem, id, activeItemId, setActiveItem, disableActiveItem}) => {
-  const setActive = (itemId) => {
+const Item = ({title, comments, deleteItem, id, activeItemId, setActiveItem}) => {
+  const handleActiveItem = (itemId) => {
     if (itemId === activeItemId) {
-      disableActiveItem()
-      return;
+      setActiveItem(null)
     } else {
       setActiveItem(itemId)
     }
   }
+
   return (
     <div className="item">
       {activeItemId === id && <div className="item_active"></div>}
-      <div className="item-title" onClick={() => setActive(id)}>
+      <div className="item-title" onClick={() => handleActiveItem(id)}>
         <span className="item-title__name">{title}</span>
         <span className="item-title__count">{comments}</span>
       </div>

@@ -1,14 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import './CreateItemInput.scss';
 
 const CreateItemInput = ({ createNewItem }) => {
   const [item, setItem] = useState("");
 
-  const createItem = useCallback(() => {
-    if (!item) return;
+  const createItem = () => {
     createNewItem(item)
     setItem("")
-  }, [createNewItem, item]);
+  }
 
   return (
     <div className="create-item">
